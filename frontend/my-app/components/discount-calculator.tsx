@@ -59,7 +59,9 @@ export function DiscountCalculator() {
         discountValue: discountType === "bogo" ? "0" : discountValue,
       })
 
-      setFinalPrice(result.finalPrice)
+      console.log('result', result)
+
+      setFinalPrice(result.final_price)
     } catch (error) {
       console.error(error)
       toast("Failed to calculate discount")

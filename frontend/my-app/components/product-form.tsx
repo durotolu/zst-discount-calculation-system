@@ -8,12 +8,13 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { createProduct } from "@/lib/api"
 import { toast } from "sonner"
-import { fetchProducts } from "./product-list"
+import { useProducts } from "./product-context"
 
 export function ProductForm() {
+  const { fetchProducts } = useProducts()
   const [name, setName] = useState("")
   const [price, setPrice] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -23,19 +24,19 @@ export function ProductForm() {
       return
     }
 
-    setIsLoading(true)
+    setIsSubmitting(true)
 
     try {
       await createProduct({ name, price: Number.parseFloat(price) })
       toast("Product created successfully")
       setName("")
       setPrice("")
+      await fetchProducts()
     } catch (error) {
       console.error(error)
       toast("Failed to create product")
     } finally {
-      setIsLoading(false)
-      fetchProducts()
+      setIsSubmitting(false)
     }
   }
 
@@ -59,8 +60,8 @@ export function ProductForm() {
         />
       </div>
 
-      <Button type="submit" className="w-full" disabled={isLoading}>
-        {isLoading ? "Creating..." : "Create Product"}
+      <Button type="submit" className="w-full" disabled={isSubmitting}>
+        {isSubmitting ? "Creating..." : "Create Product"}
       </Button>
     </form>
   )

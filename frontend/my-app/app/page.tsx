@@ -1,10 +1,12 @@
 import { ProductForm } from "@/components/product-form"
 import { ProductList } from "@/components/product-list"
 import { DiscountCalculator } from "@/components/discount-calculator"
+import { ProductProvider } from "@/components/product-context"
 
 export default function Home() {
   return (
-    <main className="container mx-auto py-8 px-4">
+    <ProductProvider>
+      <main className="container mx-auto py-8 px-4">
       <h1 className="text-3xl font-bold mb-8 text-center">Discount Calculation System</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -25,7 +27,8 @@ export default function Home() {
           <DiscountCalculator />
         </div>
       </div>
-    </main>
+      </main>
+    </ProductProvider>
   )
 }
 

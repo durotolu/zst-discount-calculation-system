@@ -1,34 +1,20 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { getProducts } from "@/lib/api"
-import { toast } from "sonner"
+import { useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import type { Product } from "@/lib/types"
 import { Skeleton } from "@/components/ui/skeleton"
-
-export const fetchProducts = async (setProducts: (products: Product[]) => void, setIsLoading: (isLoading: boolean) => void) => {
-  setIsLoading(true)
-  try {
-    const data = await getProducts()
-    setProducts(data)
-  } catch (error) {
-    console.error(error)
-    toast("Failed to fetch products")
-  } finally {
-    setIsLoading(false)
-  }
-}
+import { useProducts } from "./product-context"
 
 export function ProductList() {
-  const [products, setProducts] = useState<Product[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const { products, isLoading, fetchProducts } = useProducts()
 
-  const handleFetchProducts = () => fetchProducts(setProducts, setIsLoading)
+  const handleFetchProducts = async () => {
+    await fetchProducts()
+  }
 
   useEffect(() => {
-    handleFetchProducts()
-  }, [])
+    fetchProducts()
+  }, [fetchProducts])
 
   if (isLoading) {
     return (
