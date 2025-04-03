@@ -9,7 +9,7 @@ class DiscountStrategy(ABC):
 # Percentage discount (e.g., 10% off)
 class PercentageDiscount(DiscountStrategy):
     def __init__(self, percentage):
-        self.percentage = percentage
+        self.percentage = float(percentage)
 
     def apply(self, price, quantity=1, **kwargs):
         total_price = price * quantity
@@ -19,7 +19,7 @@ class PercentageDiscount(DiscountStrategy):
 # Flat discount (e.g., $50 off)
 class FlatDiscount(DiscountStrategy):
     def __init__(self, amount):
-        self.amount = amount
+        self.amount = float(amount)
 
     def apply(self, price, quantity=1, **kwargs):
         total_price = price * quantity

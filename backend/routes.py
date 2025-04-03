@@ -34,7 +34,7 @@ def apply_discount(product_id):
 
     data = request.get_json()
     discount_type = data.get('discount_type')
-    discount_value = data.get('value', 0)  # For percentage or flat discounts
+    discount_value = data.get('discount_value', 0)  # For percentage or flat discounts
     quantity = data.get('quantity', 1)     # Default quantity is 1
 
     try:
