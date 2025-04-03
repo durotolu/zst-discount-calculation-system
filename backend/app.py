@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from config import Config
 from database import db
 from routes import api  # Import Blueprint AFTER db is initialized
@@ -6,6 +7,8 @@ from routes import api  # Import Blueprint AFTER db is initialized
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+
+    CORS(app)
 
     db.init_app(app)  # Initialize database with Flask app
     app.register_blueprint(api, url_prefix='/api')
