@@ -19,6 +19,19 @@ def create_product():
     db.session.commit()
     return jsonify(product.to_dict()), 201
 
+# Endpoint to delete a new product
+@api.route('/products', methods=['DELETE'])
+def delete_product():
+    data = request.get_json()
+    id = data.get('id')
+    if not id:
+        return jsonify({"error": "product id required"}), 400
+
+    product = Product.query.get(id)
+    db.session.delete(product)
+    db.session.commit()
+    return jsonify(product.to_dict()), 201
+
 # Endpoint to retrieve the list of products
 @api.route('/products', methods=['GET'])
 def get_products():

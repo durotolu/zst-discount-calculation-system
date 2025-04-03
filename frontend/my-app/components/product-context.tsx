@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useContext, useState, useCallback, ReactNode } from "react"
-import { getProducts } from "@/lib/api"
+import { getProducts, deleteProduct } from "@/lib/api"
 import { toast } from "sonner"
 import type { Product } from "@/lib/types"
 
@@ -9,6 +9,7 @@ type ProductContextType = {
   products: Product[]
   isLoading: boolean
   fetchProducts: () => Promise<void>
+  handleDelete: (id: number) => Promise<void>
 }
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined)
@@ -30,8 +31,19 @@ export function ProductProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
+  const handleDelete = useCallback(async (id: number) => {
+    try {
+      await deleteProduct({ id })
+      toast.success("Product deleted successfully")
+      await fetchProducts()
+    } catch (error) {
+      console.error(error)
+      toast.error("Failed to delete product")
+    }
+  }, [fetchProducts])
+
   return (
-    <ProductContext.Provider value={{ products, isLoading, fetchProducts }}>
+    <ProductContext.Provider value={{ products, isLoading, fetchProducts, handleDelete }}>
       {children}
     </ProductContext.Provider>
   )
